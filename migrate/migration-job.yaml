@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: prisma-migrate
+  namespace: 2cloud
+  annotations: 
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrate
+          image: docker.io/library/2cloud-next-js-web:latest
+          imagePullPolicy: Never
+          command:
+            - sh
+            - -c
+            - |
+              npx prisma migrate deploy && npx prisma db seed
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+
+            - name: DATABASE_URL
+              value: "postgresql://twocloud:$(POSTGRES_PASSWORD)@postgres:5432/twocloud_prod"
+
+            - name: ADMIN_SEED_EMAIL
+              value: "admin@localhost"
+
+            - name: ADMIN_SEED_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: admin-secret
+                  key: ADMIN_SEED_PASSWORD

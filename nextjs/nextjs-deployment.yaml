@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextjs
+  namespace: 2cloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nextjs
+  template:
+    metadata:
+      labels:
+        app: nextjs
+    spec:
+      containers:
+        - name: nextjs
+          image: docker.io/library/2cloud-next-js-web:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+
+          env:
+            - name: NODE_ENV
+              value: "production"
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+
+            - name: DATABASE_URL
+              value: "postgresql://twocloud:$(POSTGRES_PASSWORD)@postgres:5432/twocloud_prod"
+
+            - name: ADMIN_SEED_EMAIL
+              value: "admin@localhost"
+
+            - name: ADMIN_SEED_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: admin-secret
+                  key: ADMIN_SEED_PASSWORD
+
+            - name: SESSION_COOKIE_NAME
+              value: "admin_session"
+
+            - name: SESSION_TTL_DAYS
+              value: "7"
+
+            - name: UPLOAD_MAX_SIZE_MB
+              value: "8"
+
+            - name: UPLOAD_DIR
+              value: "/app/public/uploads"
+
+            - name: NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+              value: ""
+
+            - name: NEXT_PUBLIC_CONTACT_API_URL
+              value: ""
+
+            - name: NEXT_PUBLIC_SITE_URL
+              value: "https://2cloud.local"
+
+          volumeMounts:
+            - name: uploads-storage
+              mountPath: /app/public/uploads
+
+      volumes:
+        - name: uploads-storage
+          persistentVolumeClaim:
+            claimName: uploads-pvc
+
+
