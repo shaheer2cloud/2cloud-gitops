@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
         - name: nextjs
-          image: docker.io/library/2cloud-next-js-web:latest
-          imagePullPolicy: Never
+          image: shaheeradmin/2cloud-next-js:a89b1a6430e9632bc434aa1794cc5bb0f9b589a7
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
 
