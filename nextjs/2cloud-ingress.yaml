@@ -3,9 +3,6 @@ kind: Ingress
 metadata:
   name: 2cloud-ingress
   namespace: 2cloud
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
-    argocd.argoproj.io/ignore-healthcheck: "true"
 spec:
   ingressClassName: public
 
