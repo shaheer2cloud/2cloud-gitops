@@ -4,7 +4,7 @@ metadata:
   name: 2cloud-ingress
   namespace: 2cloud
   annotations:
-  argocd.argoproj.io/ignore-healthcheck: "true"
+    argocd.argoproj.io/ignore-healthcheck: "true"
 spec:
   ingressClassName: public
 
