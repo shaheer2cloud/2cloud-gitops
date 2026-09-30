@@ -7,20 +7,28 @@ metadata:
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
     argocd.argoproj.io/sync-wave: "1"
+
 spec:
   backoffLimit: 3
+
   template:
     spec:
+      imagePullSecrets:
+        - name: dockerhub-2cloud
+
       restartPolicy: Never
+
       containers:
         - name: migrate
           image: shaheeradmin/2cloud-next-js:f84b4645cf5689cdb696c4878f9121230ccc8de4
           imagePullPolicy: IfNotPresent
+
           command:
             - sh
             - -c
             - |
               npx prisma migrate deploy && npx prisma db seed
+
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
