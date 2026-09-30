@@ -14,7 +14,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: migrate
-          image: shaheeradmin/2cloud-next-js:a89b1a6430e9632bc434aa1794cc5bb0f9b589a7
+          image: shaheeradmin/2cloud-next-js:f84b4645cf5689cdb696c4878f9121230ccc8de4
           imagePullPolicy: IfNotPresent
           command:
             - sh
