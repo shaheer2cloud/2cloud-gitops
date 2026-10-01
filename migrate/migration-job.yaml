@@ -20,7 +20,7 @@ spec:
 
       containers:
         - name: migrate
-          image: shaheeradmin/2cloud-next-js:8933bb92e3a1c2018203657091bdd7a575d686b3
+          image: shaheeradmin/2cloud-next-js:46772a7d3882b829203ea6b114ca74f8168c1d23
           imagePullPolicy: IfNotPresent
 
           command:
